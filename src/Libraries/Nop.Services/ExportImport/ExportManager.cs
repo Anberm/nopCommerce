@@ -119,40 +119,40 @@ namespace Nop.Services.ExportImport
             OrderSettings orderSettings,
             ProductEditorSettings productEditorSettings)
         {
-            this._addressSettings = addressSettings;
-            this._catalogSettings = catalogSettings;
-            this._customerSettings = customerSettings;
-            this._forumSettings = forumSettings;
-            this._categoryService = categoryService;
-            this._countryService = countryService;
-            this._currencyService = currencyService;
-            this._customerAttributeFormatter = customerAttributeFormatter;
-            this._customerService = customerService;
-            this._dateRangeService = dateRangeService;
-            this._dateTimeHelper = dateTimeHelper;
-            this._forumService = forumService;
-            this._gdprService = gdprService;
-            this._genericAttributeService = genericAttributeService;
-            this._localizationService = localizationService;
-            this._manufacturerService = manufacturerService;
-            this._measureService = measureService;
-            this._newsLetterSubscriptionService = newsLetterSubscriptionService;
-            this._orderService = orderService;
-            this._pictureService = pictureService;
-            this._priceFormatter = priceFormatter;
-            this._productAttributeService = productAttributeService;
-            this._productTagService = productTagService;
-            this._productTemplateService = productTemplateService;
-            this._specificationAttributeService = specificationAttributeService;
-            this._stateProvinceService = stateProvinceService;
-            this._storeMappingService = storeMappingService;
-            this._storeService = storeService;
-            this._taxCategoryService = taxCategoryService;
-            this._urlRecordService = urlRecordService;
-            this._vendorService = vendorService;
-            this._workContext = workContext;
-            this._orderSettings = orderSettings;
-            this._productEditorSettings = productEditorSettings;
+            _addressSettings = addressSettings;
+            _catalogSettings = catalogSettings;
+            _customerSettings = customerSettings;
+            _forumSettings = forumSettings;
+            _categoryService = categoryService;
+            _countryService = countryService;
+            _currencyService = currencyService;
+            _customerAttributeFormatter = customerAttributeFormatter;
+            _customerService = customerService;
+            _dateRangeService = dateRangeService;
+            _dateTimeHelper = dateTimeHelper;
+            _forumService = forumService;
+            _gdprService = gdprService;
+            _genericAttributeService = genericAttributeService;
+            _localizationService = localizationService;
+            _manufacturerService = manufacturerService;
+            _measureService = measureService;
+            _newsLetterSubscriptionService = newsLetterSubscriptionService;
+            _orderService = orderService;
+            _pictureService = pictureService;
+            _priceFormatter = priceFormatter;
+            _productAttributeService = productAttributeService;
+            _productTagService = productTagService;
+            _productTemplateService = productTemplateService;
+            _specificationAttributeService = specificationAttributeService;
+            _stateProvinceService = stateProvinceService;
+            _storeMappingService = storeMappingService;
+            _storeService = storeService;
+            _taxCategoryService = taxCategoryService;
+            _urlRecordService = urlRecordService;
+            _vendorService = vendorService;
+            _workContext = workContext;
+            _orderSettings = orderSettings;
+            _productEditorSettings = productEditorSettings;
         }
 
         #endregion
@@ -857,7 +857,7 @@ namespace Nop.Services.ExportImport
             {
                 xmlWriter.WriteStartElement("Product");
 
-                xmlWriter.WriteString("ProductId", product.Id, IgnoreExportPoductProperty(p => p.Id));
+                xmlWriter.WriteString("ProductId", product.Id);
                 xmlWriter.WriteString("ProductTypeId", product.ProductTypeId, IgnoreExportPoductProperty(p => p.ProductType));
                 xmlWriter.WriteString("ParentGroupedProductId", product.ParentGroupedProductId, IgnoreExportPoductProperty(p => p.ProductType));
                 xmlWriter.WriteString("VisibleIndividually", product.VisibleIndividually, IgnoreExportPoductProperty(p => p.VisibleIndividually));
@@ -949,8 +949,8 @@ namespace Nop.Services.ExportImport
                 xmlWriter.WriteString("Width", product.Width, IgnoreExportPoductProperty(p => p.Dimensions));
                 xmlWriter.WriteString("Height", product.Height, IgnoreExportPoductProperty(p => p.Dimensions));
                 xmlWriter.WriteString("Published", product.Published, IgnoreExportPoductProperty(p => p.Published));
-                xmlWriter.WriteString("CreatedOnUtc", product.CreatedOnUtc, IgnoreExportPoductProperty(p => p.CreatedOn));
-                xmlWriter.WriteString("UpdatedOnUtc", product.UpdatedOnUtc, IgnoreExportPoductProperty(p => p.UpdatedOn));
+                xmlWriter.WriteString("CreatedOnUtc", product.CreatedOnUtc);
+                xmlWriter.WriteString("UpdatedOnUtc", product.UpdatedOnUtc);
 
                 if (!IgnoreExportPoductProperty(p => p.Discounts))
                 {
@@ -1166,7 +1166,7 @@ namespace Nop.Services.ExportImport
         {
             var properties = new[]
             {
-                new PropertyByName<Product>("ProductId", p => p.Id, IgnoreExportPoductProperty(p => p.Id)),
+                new PropertyByName<Product>("ProductId", p => p.Id),
                 new PropertyByName<Product>("ProductType", p => p.ProductTypeId, IgnoreExportPoductProperty(p => p.ProductType))
                 {
                     DropDownElements = ProductType.SimpleProduct.ToSelectList(useLocalization: false)

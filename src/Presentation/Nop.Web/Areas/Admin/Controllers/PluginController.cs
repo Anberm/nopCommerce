@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -79,26 +80,26 @@ namespace Nop.Web.Areas.Admin.Controllers
             TaxSettings taxSettings,
             WidgetSettings widgetSettings)
         {
-            this._externalAuthenticationSettings = externalAuthenticationSettings;
-            this._customerActivityService = customerActivityService;
-            this._eventPublisher = eventPublisher;
-            this._externalAuthenticationService = externalAuthenticationService;
-            this._localizationService = localizationService;
-            this._notificationService = notificationService;
-            this._paymentService = paymentService;
-            this._permissionService = permissionService;
-            this._pluginModelFactory = pluginModelFactory;
-            this._pluginService = pluginService;
-            this._settingService = settingService;
-            this._shippingService = shippingService;
-            this._uploadService = uploadService;
-            this._webHelper = webHelper;
-            this._widgetService = widgetService;
-            this._workContext = workContext;
-            this._paymentSettings = paymentSettings;
-            this._shippingSettings = shippingSettings;
-            this._taxSettings = taxSettings;
-            this._widgetSettings = widgetSettings;
+            _externalAuthenticationSettings = externalAuthenticationSettings;
+            _customerActivityService = customerActivityService;
+            _eventPublisher = eventPublisher;
+            _externalAuthenticationService = externalAuthenticationService;
+            _localizationService = localizationService;
+            _notificationService = notificationService;
+            _paymentService = paymentService;
+            _permissionService = permissionService;
+            _pluginModelFactory = pluginModelFactory;
+            _pluginService = pluginService;
+            _settingService = settingService;
+            _shippingService = shippingService;
+            _uploadService = uploadService;
+            _webHelper = webHelper;
+            _widgetService = widgetService;
+            _workContext = workContext;
+            _paymentSettings = paymentSettings;
+            _shippingSettings = shippingSettings;
+            _taxSettings = taxSettings;
+            _widgetSettings = widgetSettings;
         }
 
         #endregion
@@ -114,7 +115,7 @@ namespace Nop.Web.Areas.Admin.Controllers
 
             return View(model);
         }
-        
+
         [HttpPost]
         public virtual IActionResult ListSelect(PluginSearchModel searchModel)
         {
@@ -127,29 +128,22 @@ namespace Nop.Web.Areas.Admin.Controllers
             return Json(model);
         }
 
-        public virtual IActionResult SearchList()
+        public virtual IActionResult AdminNavigationPlugins()
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManagePlugins))
-                return Json(new System.Collections.Generic.List<string>());
+                return Json(new List<string>());
 
-            //prepare model
-            var model = _pluginModelFactory.PreparePluginListModel(
-                new PluginSearchModel { PageSize = int.MaxValue });
+            //prepare models
+            var models = _pluginModelFactory.PrepareAdminNavigationPluginModels().Select(model => new
+            {
+                title = model.FriendlyName,
+                link = model.ConfigurationUrl,
+                parent = "Plugins",
+                grandParent = string.Empty,
+                rate = -50 //negative rate is set to move plugins to the end of list
+            }).ToList();
 
-            //negative rate is set to move plugins to the end of list
-            var filtredPlugins = model.Data
-                .Where(m => !string.IsNullOrEmpty(m.ConfigurationUrl))
-                .Select(m => new
-                {
-                    title = m.FriendlyName,
-                    link = m.ConfigurationUrl,
-                    parent = "Plugins",
-                    grandParent = "",
-                    rate = -50
-                })
-                .ToList();
-
-            return Json(filtredPlugins);
+            return Json(models);
         }
 
         [HttpPost]
